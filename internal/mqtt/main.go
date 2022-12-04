@@ -54,20 +54,6 @@ func PublishMessage(client mqtt.Client, topic string, message string) {
 	token.Wait()
 }
 
-/*func main() {
-	fmt.Println("Hello, playground")
-
-	client := connect("localhost:1883", "id1")
-	token := client.Publish("/a/b/c", 2, false, "Test de message depuis le Golang")
-
-	token.Wait()
-	if err := token.Error(); err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Message publié")
-}*/
-
 func GetMqttClient(sensorId string) mqtt.Client {
 	client := connect(os.Getenv("MQTT_URI"), sensorId)
 	return client
