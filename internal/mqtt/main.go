@@ -15,6 +15,7 @@ func init() {
 	utils.InitEnvVariables()
 }
 
+// CreateClientOptions creates the client options for the MQTT client
 func createClientOptions(brokerURI string, clientId string, username string, password string) *mqtt.ClientOptions {
 	opts := mqtt.NewClientOptions()
 
@@ -30,6 +31,7 @@ func createClientOptions(brokerURI string, clientId string, username string, pas
 	return opts
 }
 
+// Connect connects to the MQTT broker
 func connect(brokerURI string, clientId string) mqtt.Client {
 	fmt.Printf("Trying to connect to %s with clientId %s\n", brokerURI, clientId)
 

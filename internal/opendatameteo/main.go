@@ -51,6 +51,8 @@ func GetAirPressure(latitude float64, longitude float64, date string) float64 {
 	return hourly_pressure_data[hour].(float64)
 }
 
+// This method returns the meteo data from the open-meteo.com API
+// for a given airport and a given date.
 func getMeteoFromApi(latitude float64, longitude float64, date string) map[string]interface{} {
 	url := buildApiUrl(latitude, longitude, date)
 
@@ -82,6 +84,8 @@ func getMeteoFromApi(latitude float64, longitude float64, date string) map[strin
 	return jsonOut
 }
 
+// This method builds the API url to call the open-meteo.com API
+// for a given airport and a given date.
 func buildApiUrl(latitude float64, longitude float64, date string) string {
 	return "https://api.open-meteo.com/v1/forecast?" +
 		"latitude=" + fmt.Sprintf("%.3f", latitude) +
