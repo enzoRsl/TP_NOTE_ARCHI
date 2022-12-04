@@ -28,6 +28,11 @@ func GetCurrentDate() string {
 	return time.Now().Format("2006-01-02")
 }
 
+// Used for full precision at atomic level
+func GetCurrentDateAndHour() string {
+	return time.Now().Format("2006-01-02-15-04-05")
+}
+
 func GetCurrentHour() string {
 	return time.Now().Format("15")
 }

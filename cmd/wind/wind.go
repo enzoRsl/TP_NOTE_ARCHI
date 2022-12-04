@@ -29,7 +29,10 @@ func main() {
 			"airport/%s/datatype/windspeed/sensor/%s/date/%s/hour/%s/",
 			airport.AirportIataCode, sensorId, utils.GetCurrentDate(), utils.GetCurrentHour(),
 		)
-		message := fmt.Sprintf("%s:%f", utils.GetCurrentDate(), windSpeed)
+		message := fmt.Sprintf(
+			"%s:%f",
+			utils.GetCurrentDateAndHour(), windSpeed,
+		)
 
 		client.Publish(topic, 0, false, message)
 		log.Default().Println("Published message: ", message, " on topic: ", topic)
