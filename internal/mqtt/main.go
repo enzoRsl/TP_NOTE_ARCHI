@@ -49,12 +49,8 @@ func connect(brokerURI string, clientId string) mqtt.Client {
 	return client
 }
 
-func PublishMessage(client mqtt.Client, topic string, message string) {
-	token := client.Publish(topic, 0, false, message)
-	token.Wait()
-}
-
-func GetMqttClient(sensorId string) mqtt.Client {
-	client := connect(os.Getenv("MQTT_URI"), sensorId)
+// Generates the MQTT client with the .env variables
+func GetMqttClient(sensorName string, sensorId string) mqtt.Client {
+	client := connect(os.Getenv("MQTT_URI"), sensorName+sensorId)
 	return client
 }

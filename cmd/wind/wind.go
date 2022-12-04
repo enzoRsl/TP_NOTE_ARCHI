@@ -19,7 +19,7 @@ func main() {
 	sensorId, airport := utils.GetCliParams()
 
 	// Initialise the MQTT client
-	client := mqtt.GetMqttClient(sensorId)
+	client := mqtt.GetMqttClient("windspeed", sensorId)
 
 	// Start a job to get the wind speed every time given by the interval variable found in the .env file
 	for {
