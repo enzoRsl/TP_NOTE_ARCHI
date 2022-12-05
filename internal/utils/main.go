@@ -41,7 +41,11 @@ func GetCurrentHour() string {
 func InitEnvVariables() {
 	err := dotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		// we try to load the .env file with the relative path
+		err = dotenv.Load("../../.env")
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
 	}
 }
 
