@@ -51,8 +51,8 @@ func connect(brokerURI string, clientId string) mqtt.Client {
 	return client
 }
 
-// Generates the MQTT client with the .env variables
-func GetMqttClient(sensorName string, sensorId string) mqtt.Client {
-	client := connect(os.Getenv("MQTT_URI"), sensorName+sensorId)
+// Generates the MQTT client with the .env variables and a given client id
+func GetMqttClient(clientId string) mqtt.Client {
+	client := connect(os.Getenv("MQTT_URI"), clientId)
 	return client
 }
