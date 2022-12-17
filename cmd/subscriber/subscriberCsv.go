@@ -13,14 +13,18 @@ func main() {
 	waitGroup := sync.WaitGroup{}
 	waitGroup.Add(1)
 	_, csvWriter := csv.CreateCsvWriter("database.csv")
-
+	headers := []string{"airport", "datatype", "sensor", "date", "hour", "datetime", "value"}
+	csv.WriteInCsv(csvWriter, headers)
 	token := client.Subscribe("airport/#", 2, func(client m.Client, message m.Message) {
 		s := strings.Split(message.Topic(), "/")
 		var value []string
 		for i := 1; i < len(s); i += 2 {
 			value = append(value, s[i])
 		}
-		value = append(value, string(message.Payload()))
+		messagePayloadToArrayOfString := strings.Split(string(message.Payload()), ":")
+		for _, element := range messagePayloadToArrayOfString {
+			value = append(value, element)
+		}
 		csv.WriteInCsv(csvWriter, value)
 		defer csvWriter.Flush()
 	})
