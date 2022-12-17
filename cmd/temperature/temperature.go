@@ -26,12 +26,12 @@ func main() {
 		temperature := opendatameteo.GetTemperature(airport.Latitude, airport.Longitude, utils.GetCurrentDate())
 
 		topic := fmt.Sprintf(
-			"airport/%s/datatype/temperature/sensor/%s/date/%s/hour/%s/",
-			airport.AirportIataCode, sensorId, utils.GetCurrentDate(), utils.GetCurrentHour(),
+			"airport/%s/datatype/temperature/date/%s/hour/%s/",
+			airport.AirportIataCode, utils.GetCurrentDate(), utils.GetCurrentHour(),
 		)
 		message := fmt.Sprintf(
-			"%s:%f",
-			utils.GetCurrentDateAndHour(), temperature,
+			"%s:%s:%f",
+			sensorId, utils.GetCurrentDateAndHour(), temperature,
 		)
 
 		client.Publish(topic, 0, false, message)

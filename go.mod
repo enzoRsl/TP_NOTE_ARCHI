@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.4.2 // indirect
+	github.com/gomodule/redigo v1.8.9
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/yuin/goldmark v1.4.13 // indirect

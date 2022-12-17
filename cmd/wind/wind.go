@@ -26,12 +26,12 @@ func main() {
 		windSpeed := opendatameteo.GetWindSpeed(airport.Latitude, airport.Longitude, utils.GetCurrentDate())
 
 		topic := fmt.Sprintf(
-			"airport/%s/datatype/windspeed/sensor/%s/date/%s/hour/%s/",
-			airport.AirportIataCode, sensorId, utils.GetCurrentDate(), utils.GetCurrentHour(),
+			"airport/%s/datatype/windspeed/date/%s/hour/%s/",
+			airport.AirportIataCode, utils.GetCurrentDate(), utils.GetCurrentHour(),
 		)
 		message := fmt.Sprintf(
-			"%s:%f",
-			utils.GetCurrentDateAndHour(), windSpeed,
+			"%s:%s:%f",
+			sensorId, utils.GetCurrentDateAndHour(), windSpeed,
 		)
 
 		client.Publish(topic, 0, false, message)

@@ -26,12 +26,12 @@ func main() {
 		pressure := opendatameteo.GetAirPressure(airport.Latitude, airport.Longitude, utils.GetCurrentDate())
 
 		topic := fmt.Sprintf(
-			"airport/%s/datatype/pressure/sensor/%s/date/%s/hour/%s/",
-			airport.AirportIataCode, sensorId, utils.GetCurrentDate(), utils.GetCurrentHour(),
+			"airport/%s/datatype/pressure/date/%s/hour/%s/",
+			airport.AirportIataCode, utils.GetCurrentDate(), utils.GetCurrentHour(),
 		)
 		message := fmt.Sprintf(
-			"%s:%f",
-			utils.GetCurrentDateAndHour(), pressure,
+			"%s:%s:%f",
+			sensorId, utils.GetCurrentDateAndHour(), pressure,
 		)
 
 		client.Publish(topic, 0, false, message)
