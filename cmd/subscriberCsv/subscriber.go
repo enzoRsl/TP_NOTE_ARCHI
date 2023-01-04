@@ -1,11 +1,12 @@
 package main
 
 import (
+	"strings"
+	"sync"
+
 	m "github.com/eclipse/paho.mqtt.golang"
 	"github.com/enzoRsl/TP_NOTE_ARCHI/internal/csv"
 	"github.com/enzoRsl/TP_NOTE_ARCHI/internal/mqtt"
-	"strings"
-	"sync"
 )
 
 func main() {

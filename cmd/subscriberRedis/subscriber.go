@@ -1,12 +1,13 @@
 package main
 
 import (
-	m "github.com/eclipse/paho.mqtt.golang"
-	"github.com/enzoRsl/TP_NOTE_ARCHI/internal/mqtt"
-	"github.com/enzoRsl/TP_NOTE_ARCHI/internal/redis"
 	"os"
 	"strings"
 	"sync"
+
+	m "github.com/eclipse/paho.mqtt.golang"
+	"github.com/enzoRsl/TP_NOTE_ARCHI/internal/mqtt"
+	"github.com/enzoRsl/TP_NOTE_ARCHI/internal/redis"
 )
 
 func main() {
