@@ -55,9 +55,10 @@ func GetCliParams() (string, Airport) {
 	// The reason is that we could have multiple sensors
 	if len(os.Args) != 3 {
 		panic("You must give the sensor id as a command line argument, as well as the airport" +
-			" 3 letters IATA code (example: NTE)" +
-			"\nUsage: ./temperature <sensor_id> <IATA code>" +
-			"\n./Example (for the NTE airport): temperature 1 NTE")
+			" 3 letters IATA code (example: NTE for the Nantes airport)" +
+			"\nUsage: ./<path_to_executable> <sensor_id> <IATA code>" +
+			"\nUsage example for the temperature executable, sensor id 1 and NTE airport:" +
+			" ./build/temperature 1 NTE")
 	}
 
 	sensorId := os.Args[1]
