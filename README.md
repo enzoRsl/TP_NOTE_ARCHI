@@ -16,6 +16,10 @@ Le dépôt du serveur HTTP demandé est [disponible à cette adresse](https://gi
     - [La génération des données](#la-génération-des-données)
     - [Le fichier de configuration](#le-fichier-de-configuration)
     - [Les identifiants de capteurs](#les-identifiants-de-capteurs)
+    - [Pourquoi avoir choisi Redis](#pourquoi-avoir-choisi-redis)
+    - [Topic Redis](#topic-redis)
+    - [Messages Redis](#messages-redis)
+    - [Niveau de QoS](#niveau-de-qos)
 
 
 ## Instructions d'installation
@@ -116,3 +120,52 @@ Cette contrainte nous oblige à lister les aéroports avec leur position (latitu
 Nous avons décidé de demander des identifiants de capteurs lors de l'exécution de ceux-ci pour que nous puissions simuler la présence de plusieurs capteurs dans un seul et même aéroport. Par exemple, nous pouvons imaginer que nous ayons deux capteurs de vitesse du vent dans un même aéroport, mais sur deux pistes différentes.
 
 Avec des identifiants de capteurs permet de simuler un capteur numéro `1` sur une première piste, ainsi que `n` autres capteurs sur ce même aéroport.
+
+
+### Pourquoi avoir choisi Redis
+
+Nous avons décidé de choisir Redis comme base de données. Ce choix vient du fait que nous ne connaissions pas cet outil, et que nous avions envie de découvrir son usage.
+De plus, la manière de gérer les données que nous avons utilisées (expliquée plus en détail dans la partie [topic redis](#topic-redis)) peut requérir beaucoup de requêtes à la base pour obtenir certaines données sur une tranche horaires données. Étant donné que Redis est construit sur la RAM, cela nous a permis de ne pas nous soucier de la vitesse d'accès à la base.
+
+
+### Topic Redis
+
+Les topics Redis sont organisés sous la forme suivante :
+
+```
+airport/<code IATA>/datatype/<wind|temperature|pressure>/date/<date au format 2006-01-02>/hour/<heure format 24h>/
+```
+
+Exemple :
+```
+airport/NTE/datatype/wind>/date/2006-01-02/hour/15/
+```
+
+Ainsi, nous pouvons récupérer toutes les données qui concernent un aéroport, un type de capteur, une date précise ainsi que l'heure de la journée.
+
+
+### Messages Redis
+
+Les messages postés dans les topics Redis sont organisés sous la forme suivante :
+
+```
+<identifiant du capteur>:<date et heure au format 2006-01-02-15-04-05>:<donnée du capteur dans l'unité métrique internationale>
+```
+
+Exemple :
+```
+1:2006-01-02-15-04-05:14
+```
+
+Ainsi, cela nous permet d'avoir différents capteurs avec les données sur le même topic, ce qui est pratique pour agréger les données dans l'API. De plus, nous avons la date directement formatée dans le message.
+
+
+### Niveau de QoS
+
+Nous avons choisi d'utiliser un niveau de QoS sur le broker MQTT de 2. Nous avons pris cette décision car de la manière que nous avons organisé notre Redis, il serait possible d'avoir des doublons de mesure de capteur, puisque les clés ne sont pas uniques.
+
+Si le niveau de QoS était de 0, nous n'aurions pas de garantie que le message a bien été délivré. Nous avons jugé des capteurs d'aéroport trop sensibles pour risquer de perdre des informations.
+
+Si le niveau de QoS était de 1, le broker MQTT aurait pu recevoir plusieurs fois le même message, et donc fausser les moyennes et les données stockées.
+
+Nous n'avions donc d'autre choix que d'avoir un niveau de QoS de 2 avec la méthode que nous avons décidé d'utiliser.
