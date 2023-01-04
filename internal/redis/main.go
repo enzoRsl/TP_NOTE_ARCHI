@@ -1,8 +1,9 @@
 package redis
 
 import (
-	"github.com/gomodule/redigo/redis"
 	"log"
+
+	"github.com/gomodule/redigo/redis"
 )
 
 func EstablishConnectionToRedis(network string, address string) redis.Conn {
