@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"strings"
 	"sync"
 
@@ -13,10 +14,11 @@ func main() {
 	client := mqtt.GetMqttClient("subscriberCsv")
 	waitGroup := sync.WaitGroup{}
 	waitGroup.Add(1)
+	qos := byte(os.Getenv("MQTT_QOS")[0] - '0')
 	_, csvWriter := csv.CreateCsvWriter("database.csv")
 	headers := []string{"airport", "datatype", "sensor", "date", "hour", "datetime", "value"}
 	csv.WriteInCsv(csvWriter, headers)
-	token := client.Subscribe("airport/#", 2, func(client m.Client, message m.Message) {
+	token := client.Subscribe("airport/#", qos, func(client m.Client, message m.Message) {
 		s := strings.Split(message.Topic(), "/")
 		var value []string
 		for i := 1; i < len(s); i += 2 {

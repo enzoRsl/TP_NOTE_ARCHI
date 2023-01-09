@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	mqtt "github.com/enzoRsl/TP_NOTE_ARCHI/internal/mqtt"
@@ -34,7 +35,8 @@ func main() {
 			sensorId, utils.GetCurrentDateAndHour(), temperature,
 		)
 
-		client.Publish(topic, 0, false, message)
+		qos := byte(os.Getenv("MQTT_QOS")[0] - '0')
+		client.Publish(topic, qos, false, message)
 		log.Default().Println("Published message: ", message, " on topic: ", topic)
 
 		time.Sleep(publicationInterval * time.Second)

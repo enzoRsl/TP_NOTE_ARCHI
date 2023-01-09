@@ -8,13 +8,19 @@ import (
 	m "github.com/eclipse/paho.mqtt.golang"
 	"github.com/enzoRsl/TP_NOTE_ARCHI/internal/mqtt"
 	"github.com/enzoRsl/TP_NOTE_ARCHI/internal/redis"
+	"github.com/enzoRsl/TP_NOTE_ARCHI/internal/utils"
 )
+
+func init() {
+	utils.InitEnvVariables()
+}
 
 func main() {
 	client := mqtt.GetMqttClient("subscriberRedis")
 	waitGroup := sync.WaitGroup{}
 	waitGroup.Add(1)
-	token := client.Subscribe("airport/#", 2, func(client m.Client, message m.Message) {
+	qos := byte(os.Getenv("MQTT_QOS")[0] - '0')
+	token := client.Subscribe("airport/#", qos, func(client m.Client, message m.Message) {
 		conn := redis.EstablishConnectionToRedis("tcp", os.Getenv("REDIS_URI"))
 		topicSeparated := strings.Split(message.Topic(), "/")
 		airport := topicSeparated[1]
